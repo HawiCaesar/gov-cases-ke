@@ -36,12 +36,15 @@
         var dataset = [];
         var b = [];
         var k
+        var v
 
         //pvalue = parseInt(a[2]['attributes']['PERCENTAGE'].split('%'));
 
         for(i=0,k=0; i<a.length; ++i,++k){
 
-            if(a[i]['attributes']['YEAR']=="12/31/2015 12:00:00 AM" && a[i]['attributes']['PERCENTAGE']!="0%"){
+            v = parseFloat(a[i]['attributes']['PERCENTAGE'].split('%'));
+
+            if(a[i]['attributes']['YEAR']=="12/31/2015 12:00:00 AM" && v>0){
                 b[k] = a[i];
             }else{
                 --k;
@@ -54,7 +57,7 @@
         for(j=0; j<b.length; ++j){
             //console.log(i);
 
-            pvalue = parseInt(b[j]['attributes']['PERCENTAGE'].split('%'));
+            pvalue = parseFloat(b[j]['attributes']['PERCENTAGE'].split('%'));
                     
             dataset[j] = {
                 name: b[j]['attributes']['ISSUE'],
