@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HawiCaesar</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="HawiCaesar">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+</head>
+<body style="font-family: 'Raleway', sans-serif;">
+
+
+
+<!-- <div id="container2015" style="height: 400px; margin: 0 auto"></div>
+<div id="container2014" style="height: 400px; margin: 0 auto"></div> -->
+
+<div id="container2015" style=""></div>
+
+<script src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+	$(function () {
+
+    $(document).ready(function () {
+
+       $.getJSON('http://opendata.arcgis.com/datasets/4ceee74d7dce4445b5c6582722b8c523_0/FeatureServer/0/query?where=1%3D1&outFields=ISSUE,PERCENTAGE,YEAR&outSR=4326&f=json', function(complaint_data){
+
+        var a  = complaint_data.features;
+        var i;
+        var j
+        var dataset = [];
+        var b = [];
+        var k
+
+        //pvalue = parseInt(a[2]['attributes']['PERCENTAGE'].split('%'));
+
+        for(i=0,k=0; i<a.length; ++i,++k){
+
+            if(a[i]['attributes']['YEAR']=="12/31/2015 12:00:00 AM" && a[i]['attributes']['PERCENTAGE']!="0%"){
+                b[k] = a[i];
+            }else{
+                --k;
+            }
+
+
+        }
+        //pvalue = parseInt(b[0]['attributes']['PERCENTAGE'].split('%'));
+
+        for(j=0; j<b.length; ++j){
+            //console.log(i);
+
+            pvalue = parseInt(b[j]['attributes']['PERCENTAGE'].split('%'));
+                    
+            dataset[j] = {
+                name: b[j]['attributes']['ISSUE'],
+                y: pvalue
+            }
+            
+            
+        }
+
+        def = JSON.stringify(dataset);
+
+        console.log(def);
+
+
+         // Build the chart
+        $('#container2015').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Analysis Of Complaints Received By Service Issues, 2015'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true
+                    },
+                    showInLegend: true
+                }
+            },
+            credits:{
+                enabled:false
+            },
+            series: [{
+                name: 'Issue',
+                colorByPoint: true,
+                data: dataset
+
+            }]
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+       });
+
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container2014').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Analysis Of Complaints Received By Service Issues, 2014'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true
+                    },
+                    showInLegend: true
+                }
+            },
+            credits:{
+                enabled:false
+            },
+            series: [{
+                name: 'Issue',
+                colorByPoint: true,
+                data: [{
+                    name: 'Dely',
+                    y: 15.67
+                }, {
+                    name: 'Discourtesy',
+                    y: 0.18,
+                }, {
+                    name: 'Inefficiency',
+                    y: 2.34
+                }, {
+                    name: 'Maladministration',
+                    y: 13.75
+                }, {
+                    name: 'Administrative Injustice',
+                    y: 5.55
+                }, {
+                    name: 'Oppressive Offical Conduct',
+                    y: 0.76
+                },{
+                    name: 'Crimminal Matters',
+                    y: 0.44
+                }, {
+                    name: 'Unlawful Offical Conduct',
+                    y: 1.46
+                },{
+                    name: 'Civil Matters',
+                    y: 4
+                }, {
+                    name: 'Manifest Injustice ',
+                    y: 7.38
+                },{
+                    name: 'Abuse of Power',
+                    y: 10.89
+                }, {
+                    name: 'Misbehaviour',
+                    y: 2.1
+                },{
+                    name: 'Ineptitude',
+                    y: 2.77
+                }, {
+                    name: 'Unresponsive Offical Conduct',
+                    y: 19.91
+                }]
+            }]
+        });
+    });
+});
+</script>
+
+</body>
+</html>
