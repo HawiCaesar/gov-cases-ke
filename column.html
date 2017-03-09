@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HawiCaesar | Cases Against Government KE</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="HawiCaesar">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+<div id="container2015" style="height: 600px; margin: 0 auto"></div>
+
+<script src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<script>
+
+$(document).ready(function () {
+
+	$.getJSON('http://opendata.arcgis.com/datasets/4ceee74d7dce4445b5c6582722b8c523_0/FeatureServer/0/query?where=1%3D1&outFields=ISSUE,PERCENTAGE,YEAR&outSR=4326&f=json', function(complaint_data){
+
+			var open_data  = complaint_data.features;
+        	var i, j, k, v;
+
+
+	        var dataset = [];
+	        var modified_data = [];
+	        var mini_data = [];
+	        
+
+	        for(i=0,k=0; i<open_data.length; ++i,++k){
+
+	            v = parseFloat(open_data[i]['attributes']['PERCENTAGE'].split('%'));
+
+	            if(v > 0){
+	                modified_data[k] = open_data[i];
+	            }else{
+	                --k;
+	            }
+
+
+	        }
+
+	        //console.log(modified_data)
+
+	        for(j=0; j<modified_data.length; ++j){
+	                    
+	            // dataset[j] = {
+	            //     name: modified_data[j]['attributes']['ISSUE'],
+	            //     y: pvalue
+	            // }
+
+	            pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
+
+	            if(modified_data[j]['attributes']['YEAR']=="12/31/2015 12:00:00 AM"){
+
+	            	
+
+	            	dataset[j] = {
+	            		name: modified_data[j]['attributes']['ISSUE'],
+	            		data: mini_data.push(pvalue)
+	            	}
+	            }
+	            
+	            
+	        }
+
+	        console.log(dataset)
+
+
+				Highcharts.chart('container2015', {
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: 'Stacked column chart'
+			    },
+			    xAxis: {
+			        categories: ['by 31-12-2015']
+			    },
+			    yAxis: {
+			        min: 0,
+			        title: {
+			            text: 'Total fruit consumption'
+			        },
+			        stackLabels: {
+			            enabled: true,
+			            style: {
+			                fontWeight: 'bold',
+			                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+			            }
+			        }
+			    },
+			    legend: {
+			        align: 'right',
+			        x: -30,
+			        verticalAlign: 'top',
+			        y: 25,
+			        floating: true,
+			        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+			        borderColor: '#CCC',
+			        borderWidth: 1,
+			        shadow: false
+			    },
+			    tooltip: {
+			        headerFormat: '<b>{point.x}</b><br/>',
+			        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+			    },
+			    plotOptions: {
+			        column: {
+			            stacking: 'normal',
+			            dataLabels: {
+			                enabled: true,
+			                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+			            }
+			        }
+			    },
+			    series: dataset
+			});
+
+	});
+
+});
+
+</script>
+</body>
+</html>

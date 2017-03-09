@@ -17,7 +17,7 @@
 <!-- <div id="container2015" style="height: 400px; margin: 0 auto"></div>
 <div id="container2014" style="height: 400px; margin: 0 auto"></div> -->
 
-<div id="container2015" style=""></div>
+<div id="container2015" style="height: 600px; margin: 0 auto"></div>
 
 <script src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -30,47 +30,39 @@
 
        $.getJSON('http://opendata.arcgis.com/datasets/4ceee74d7dce4445b5c6582722b8c523_0/FeatureServer/0/query?where=1%3D1&outFields=ISSUE,PERCENTAGE,YEAR&outSR=4326&f=json', function(complaint_data){
 
-        var a  = complaint_data.features;
-        var i;
-        var j
+        var open_data  = complaint_data.features;
+        var i, j, k, v;
+
+
         var dataset = [];
-        var b = [];
-        var k
-        var v
+        var modified_data = [];
+        
 
-        //pvalue = parseInt(a[2]['attributes']['PERCENTAGE'].split('%'));
+        for(i=0,k=0; i<open_data.length; ++i,++k){
 
-        for(i=0,k=0; i<a.length; ++i,++k){
+            v = parseFloat(open_data[i]['attributes']['PERCENTAGE'].split('%'));
 
-            v = parseFloat(a[i]['attributes']['PERCENTAGE'].split('%'));
-
-            if(a[i]['attributes']['YEAR']=="12/31/2015 12:00:00 AM" && v>0){
-                b[k] = a[i];
+            if(open_data[i]['attributes']['YEAR']=="12/31/2015 12:00:00 AM" && v > 0){
+                modified_data[k] = open_data[i];
             }else{
                 --k;
             }
 
 
         }
-        //pvalue = parseInt(b[0]['attributes']['PERCENTAGE'].split('%'));
 
-        for(j=0; j<b.length; ++j){
-            //console.log(i);
+        for(j=0; j<modified_data.length; ++j){
 
-            pvalue = parseFloat(b[j]['attributes']['PERCENTAGE'].split('%'));
+            pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
                     
             dataset[j] = {
-                name: b[j]['attributes']['ISSUE'],
+                name: modified_data[j]['attributes']['ISSUE'],
                 y: pvalue
             }
             
             
         }
-
-        def = JSON.stringify(dataset);
-
-        console.log(def);
-
+        console.log(dataset)
 
          // Build the chart
         $('#container2015').highcharts({
