@@ -25,12 +25,15 @@ $(document).ready(function () {
 	$.getJSON('http://opendata.arcgis.com/datasets/4ceee74d7dce4445b5c6582722b8c523_0/FeatureServer/0/query?where=1%3D1&outFields=ISSUE,PERCENTAGE,YEAR&outSR=4326&f=json', function(complaint_data){
 
 			var open_data  = complaint_data.features;
-        	var i, j, k, v;
+        	var i, j, k, v, z;
 
 
 	        var dataset = [];
+	        var dataset2 = [];
+	        var dataset3 = [];
 	        var modified_data = [];
-	        var mini_data = [];
+	        var mini_data2 = [];
+			var mini_data = [];
 	        
 
 	        for(i=0,k=0; i<open_data.length; ++i,++k){
@@ -48,29 +51,47 @@ $(document).ready(function () {
 
 	        //console.log(modified_data)
 
-	        for(j=0; j<modified_data.length; ++j){
+	        for(j=0,z=0; j<modified_data.length; ++j,++z){
 	                    
-	            // dataset[j] = {
-	            //     name: modified_data[j]['attributes']['ISSUE'],
-	            //     y: pvalue
-	            // }
+	            
 
-	            pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
-
-	            if(modified_data[j]['attributes']['YEAR']=="12/31/2015 12:00:00 AM"){
-
+	            if(modified_data[j]['attributes']['ISSUE']=="Abuse Of Power"){
 	            	
+	            	pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
 
-	            	dataset[j] = {
-	            		name: modified_data[j]['attributes']['ISSUE'],
-	            		data: mini_data.push(pvalue)
+
+	            	mini_data.push(pvalue)
+
+	            	dataset[modified_data[j]['attributes']['ISSUE']] = {
+
+	            		data:mini_data
+	            	}
+
+	            }else if(modified_data[j]['attributes']['ISSUE']=="Delay"){
+
+	            	pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
+
+
+	            	mini_data2.push(pvalue)
+
+	            	dataset2[modified_data[j]['attributes']['ISSUE']] = {
+
+	            		data:mini_data2
 	            	}
 	            }
 	            
-	            
+	           
 	        }
 
-	        console.log(dataset)
+	       dataset3 = [{
+		        name: 'Abuse Of Power',
+		        data: dataset['Abuse Of Power']['data']
+		    }, {
+		        name: 'Delay',
+		        data:  dataset2['Delay']['data']
+		    }]
+
+		    console.log(dataset3)
 
 
 				Highcharts.chart('container2015', {
@@ -78,15 +99,15 @@ $(document).ready(function () {
 			        type: 'column'
 			    },
 			    title: {
-			        text: 'Stacked column chart'
+			        text: 'Analysis Of Complaints Received By Service Issues, Abuse of power and delay, 2012-2015'
 			    },
 			    xAxis: {
-			        categories: ['by 31-12-2015']
+			        categories: ['by 31-12-2012','by 31-12-2013', 'by 31-12-2014', 'by 31-12-2015']
 			    },
 			    yAxis: {
 			        min: 0,
 			        title: {
-			            text: 'Total fruit consumption'
+			            text: 'Percentage %'
 			        },
 			        stackLabels: {
 			            enabled: true,
@@ -120,7 +141,7 @@ $(document).ready(function () {
 			            }
 			        }
 			    },
-			    series: dataset
+			    series: dataset3
 			});
 
 	});
