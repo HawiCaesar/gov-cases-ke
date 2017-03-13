@@ -31,9 +31,12 @@ $(document).ready(function () {
 	        var dataset = [];
 	        var dataset2 = [];
 	        var dataset3 = [];
+	        var dataset_final = [];
 	        var modified_data = [];
-	        var mini_data2 = [];
+	        
 			var mini_data = [];
+			var mini_data2 = [];
+			var mini_data3 = [];
 	        
 
 	        for(i=0,k=0; i<open_data.length; ++i,++k){
@@ -53,13 +56,10 @@ $(document).ready(function () {
 
 	        for(j=0,z=0; j<modified_data.length; ++j,++z){
 	                    
-	            
+	            pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
 
 	            if(modified_data[j]['attributes']['ISSUE']=="Abuse Of Power"){
-	            	
-	            	pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
-
-
+	           
 	            	mini_data.push(pvalue)
 
 	            	dataset[modified_data[j]['attributes']['ISSUE']] = {
@@ -69,29 +69,37 @@ $(document).ready(function () {
 
 	            }else if(modified_data[j]['attributes']['ISSUE']=="Delay"){
 
-	            	pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
-
-
 	            	mini_data2.push(pvalue)
 
 	            	dataset2[modified_data[j]['attributes']['ISSUE']] = {
 
 	            		data:mini_data2
 	            	}
+	            }else if(modified_data[j]['attributes']['ISSUE']=="Inefficiency"){
+
+	            	mini_data3.push(pvalue)
+
+	            	dataset3[modified_data[j]['attributes']['ISSUE']] = {
+
+	            		data:mini_data3
+	            	}
 	            }
 	            
 	           
 	        }
 
-	       dataset3 = [{
+	       dataset_final = [{
 		        name: 'Abuse Of Power',
 		        data: dataset['Abuse Of Power']['data']
 		    }, {
 		        name: 'Delay',
 		        data:  dataset2['Delay']['data']
+		    }, {
+		    	name: 'Inefficiency',
+		    	data: dataset3['Inefficiency']['data']
 		    }]
 
-		    console.log(dataset3)
+		    console.log(dataset_final)
 
 
 				Highcharts.chart('container2015', {
@@ -99,7 +107,7 @@ $(document).ready(function () {
 			        type: 'column'
 			    },
 			    title: {
-			        text: 'Analysis Of Complaints Received By Service Issues, Abuse of power and delay, 2012-2015'
+			        text: 'Analysis Of Complaints Received By Service Issues, Abuse of Power, Delay, Inefficiency 2012-2015'
 			    },
 			    xAxis: {
 			        categories: ['by 31-12-2012','by 31-12-2013', 'by 31-12-2014', 'by 31-12-2015']
@@ -141,7 +149,7 @@ $(document).ready(function () {
 			            }
 			        }
 			    },
-			    series: dataset3
+			    series: dataset_final
 			});
 
 	});
