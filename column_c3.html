@@ -8,15 +8,40 @@
     <meta name="author" content="HawiCaesar">
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="c3-0.4/c3.css" rel="stylesheet" type="text/css">
+    <style>
+    	
+
+        .c3 .c3-axis-x path, .c3 .c3-axis-x line {
+		    stroke-width: 1px;
+		}
+		.c3 .c3-axis-y path, .c3 .c3-axis-y line {
+		    stroke-width: 1px;
+		}
+		.c3-axis .tick line{
+			color:black;
+		}
+
+		#c3_container .c3-chart-bars{
+			color:black;
+		}
+
+		.c3-chart-bar{
+			fill:black;
+		}
+
+
+
+    </style>
 </head>
 <body>
 
-<div id="container2015" style="height: 600px; margin: 0 auto"></div>
+<div id="c3_container" style="height: 600px; margin: 0 auto"></div>
 
 <script src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" charset="utf-8"></script>
+<script src="c3-0.4/c3.js"></script>
 
 <script>
 
@@ -99,61 +124,56 @@ $(document).ready(function () {
 		    	data: dataset3['Inefficiency']['data']
 		    }]
 
-		    console.log(dataset_final)
+		    dataset_final2 = ['Abuse_Of_Power']
+		    dataset_final3 = ['Delay']
+		    dataset_final4 = ['Inefficiency']
 
+		    for(q=0;q<dataset['Abuse Of Power']['data'].length; q++){
+		    	dataset_final2.push(dataset['Abuse Of Power']['data'][q])
+		    	dataset_final3.push(dataset2['Delay']['data'][q])
+		    	dataset_final4.push(dataset3['Inefficiency']['data'][q])
+		    }
 
-				Highcharts.chart('container2015', {
-			    chart: {
-			        type: 'column'
+		
+
+		    console.log(dataset_final2)
+
+		    var chart = c3.generate({
+		    	bindto: '#c3_container',
+			    data: {
+			        columns: [
+			            dataset_final2,
+			            dataset_final3,
+			            dataset_final4
+			        ],
+			        type: 'bar',
+			        groups: [
+			            ['Abuse_Of_Power', 'Delay', 'Inefficiency']
+			        ]
 			    },
-			    title: {
-			        text: 'Analysis Of Complaints Received By Service Issues, Abuse of Power, Delay, Inefficiency 2012-2015'
-			    },
-			    xAxis: {
-			        categories: ['by 31-12-2012','by 31-12-2013', 'by 31-12-2014', 'by 31-12-2015']
-			    },
-			    yAxis: {
-			        min: 0,
-			        title: {
-			            text: 'Percentage %'
-			        },
-			        stackLabels: {
-			            enabled: true,
-			            style: {
-			                fontWeight: 'bold',
-			                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-			            }
+			    grid: {
+			        y: {
+			           show:true
 			        }
 			    },
-			    legend: {
-			        align: 'right',
-			        x: -30,
-			        verticalAlign: 'top',
-			        y: 25,
-			        floating: true,
-			        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-			        borderColor: '#CCC',
-			        borderWidth: 1,
-			        shadow: false
-			    },
-			    tooltip: {
-			        headerFormat: '<b>{point.x}</b><br/>',
-			        pointFormat: '{series.name}: {point.y} %<br/>Total: {point.stackTotal} %'
-			    },
-			    plotOptions: {
-			        column: {
-			            stacking: 'normal',
-			            dataLabels: {
-			                enabled: false,
-			                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+			    axis: {
+			    	x: {
+			    		type: 'category',
+			    		categories: ['by 31-12-2012','by 31-12-2013', 'by 31-12-2014', 'by 31-12-2015'],
+			    		label: 'Year'
+			    	},
+			    	y: {
+			    		label: 'Percentage %',
+			    		tick: {
+			                format: function (d) { return d+"%"; }
 			            }
-			        }
-			    },
-			    series: dataset_final
+			    		
+			    	}
+			    }
 			});
 
-	});
-
+				
+ })
 });
 
 </script>
