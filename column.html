@@ -19,7 +19,6 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 
 <script>
-
 $(document).ready(function () {
 
 	$.getJSON('http://opendata.arcgis.com/datasets/4ceee74d7dce4445b5c6582722b8c523_0/FeatureServer/0/query?where=1%3D1&outFields=ISSUE,PERCENTAGE,YEAR&outSR=4326&f=json', function(complaint_data){
@@ -51,8 +50,6 @@ $(document).ready(function () {
 
 
 	        }
-
-	        //console.log(modified_data)
 
 	        for(j=0,z=0; j<modified_data.length; ++j,++z){
 	                    
@@ -110,7 +107,7 @@ $(document).ready(function () {
 			        text: 'Analysis Of Complaints Received By Service Issues, Abuse of Power, Delay, Inefficiency 2012-2015'
 			    },
 			    xAxis: {
-			        categories: ['by 31-12-2012','by 31-12-2013', 'by 31-12-2014', 'by 31-12-2015']
+			        categories: ['by 31-Dec-2012','by 31-Dec-2013', 'by 31-Dec-2014', 'by 31-Dec-2015']
 			    },
 			    yAxis: {
 			        min: 0,
@@ -125,20 +122,9 @@ $(document).ready(function () {
 			            }
 			        }
 			    },
-			    legend: {
-			        align: 'right',
-			        x: -30,
-			        verticalAlign: 'top',
-			        y: 25,
-			        floating: true,
-			        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-			        borderColor: '#CCC',
-			        borderWidth: 1,
-			        shadow: false
-			    },
 			    tooltip: {
 			        headerFormat: '<b>{point.x}</b><br/>',
-			        pointFormat: '{series.name}: {point.y} %<br/>Total: {point.stackTotal} %'
+			        pointFormat: '{series.name}: {point.y}%<br/><br />Total: {point.stackTotal}%'
 			    },
 			    plotOptions: {
 			        column: {
@@ -155,7 +141,6 @@ $(document).ready(function () {
 	});
 
 });
-
 </script>
 </body>
 </html>
