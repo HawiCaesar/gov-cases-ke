@@ -78,10 +78,67 @@ $(document).ready(function () {
 	        }
 
 	        //console.log(modified_data)
+	        full_data = []
+	        some_d = [];
 
-	        for(j=0,z=0; j<modified_data.length; ++j,++z){
-	                    
+	        for(j=0; j<modified_data.length; ++j){
+
+	            some_d = [];
+
 	            pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
+
+
+
+	            //console.log(full_data[modified_data[j]['attributes']['ISSUE']]['name'])
+
+	            if(full_data.hasOwnProperty(modified_data[j]['attributes']['ISSUE'])){
+
+	            	some_d[modified_data[j]['attributes']['ISSUE']] = full_data[modified_data[j]['attributes']['ISSUE']]['data']
+
+	            	//some_d.push(pvalue)
+
+	            	console.log(some_d)
+
+		            full_data[modified_data[j]['attributes']['ISSUE']] = {
+
+		            	//data:some_d
+		            	data: some_d
+		            }
+
+		            //console.log("has")
+
+	            }else{
+	            	// some_d[j] = pvalue
+
+		            full_data[modified_data[j]['attributes']['ISSUE']] = {
+
+		            	data:pvalue
+		            }
+
+		            //console.log("HAS NOT")
+	            }
+	         
+	           //if(full_data[modified_data[j]['attributes']['ISSUE']]['name']==modified_data[j]['attributes']['ISSUE']){
+
+	           		// some_d[j] = pvalue
+
+		            // full_data[modified_data[j]['attributes']['ISSUE']] = {
+
+		            // 	name:modified_data[j]['attributes']['ISSUE'],
+		            // 	data:some_d
+		            // }
+	          // }
+
+	            
+
+	            // full_data[modified_data[j]['attributes']['ISSUE']] = {
+
+	            // 	//name:modified_data[j]['attributes']['ISSUE'],
+	            // 	data: "eruiuieriuer"
+	            // }
+	            
+
+
 
 	            if(modified_data[j]['attributes']['ISSUE']=="Abuse Of Power"){
 	           
@@ -109,6 +166,8 @@ $(document).ready(function () {
 	            		data:mini_data3
 	            	}
 	            }
+
+
 	            
 	           
 	        }
@@ -125,7 +184,7 @@ $(document).ready(function () {
 
 		
 
-		    console.log(dataset_final2)
+		    console.log(full_data)
 
 		    var chart = c3.generate({
 		    	bindto: '#c3_container',
