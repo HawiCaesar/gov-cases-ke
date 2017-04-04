@@ -50,18 +50,24 @@ $(document).ready(function () {
 	$.getJSON('http://opendata.arcgis.com/datasets/4ceee74d7dce4445b5c6582722b8c523_0/FeatureServer/0/query?where=1%3D1&outFields=ISSUE,PERCENTAGE,YEAR&outSR=4326&f=json', function(complaint_data){
 
 			var open_data  = complaint_data.features;
-        	var i, j, k, v, z;
+        	var i, j, k;
 
 
-	        var dataset = [];
+	        var dataset1 = [];
 	        var dataset2 = [];
 	        var dataset3 = [];
-	        var dataset_final = [];
+	        var dataset4 = [];
+	        var dataset5 = [];
+	        var dataset6 = [];
+
 	        var modified_data = [];
 	        
 			var mini_data = [];
 			var mini_data2 = [];
 			var mini_data3 = [];
+			var mini_data4 = [];
+			var mini_data5 = [];
+			var mini_data6 = [];
 	        
 
 	        for(i=0,k=0; i<open_data.length; ++i,++k){
@@ -83,68 +89,15 @@ $(document).ready(function () {
 
 	        for(j=0; j<modified_data.length; ++j){
 
-	            some_d = [];
 
 	            pvalue = parseFloat(modified_data[j]['attributes']['PERCENTAGE'].split('%'));
-
-
-
-	            //console.log(full_data[modified_data[j]['attributes']['ISSUE']]['name'])
-
-	            if(full_data.hasOwnProperty(modified_data[j]['attributes']['ISSUE'])){
-
-	            	some_d[modified_data[j]['attributes']['ISSUE']] = full_data[modified_data[j]['attributes']['ISSUE']]['data']
-
-	            	//some_d.push(pvalue)
-
-	            	console.log(some_d)
-
-		            full_data[modified_data[j]['attributes']['ISSUE']] = {
-
-		            	//data:some_d
-		            	data: some_d
-		            }
-
-		            //console.log("has")
-
-	            }else{
-	            	// some_d[j] = pvalue
-
-		            full_data[modified_data[j]['attributes']['ISSUE']] = {
-
-		            	data:pvalue
-		            }
-
-		            //console.log("HAS NOT")
-	            }
-	         
-	           //if(full_data[modified_data[j]['attributes']['ISSUE']]['name']==modified_data[j]['attributes']['ISSUE']){
-
-	           		// some_d[j] = pvalue
-
-		            // full_data[modified_data[j]['attributes']['ISSUE']] = {
-
-		            // 	name:modified_data[j]['attributes']['ISSUE'],
-		            // 	data:some_d
-		            // }
-	          // }
-
-	            
-
-	            // full_data[modified_data[j]['attributes']['ISSUE']] = {
-
-	            // 	//name:modified_data[j]['attributes']['ISSUE'],
-	            // 	data: "eruiuieriuer"
-	            // }
-	            
-
 
 
 	            if(modified_data[j]['attributes']['ISSUE']=="Abuse Of Power"){
 	           
 	            	mini_data.push(pvalue)
 
-	            	dataset[modified_data[j]['attributes']['ISSUE']] = {
+	            	dataset1[modified_data[j]['attributes']['ISSUE']] = {
 
 	            		data:mini_data
 	            	}
@@ -165,26 +118,57 @@ $(document).ready(function () {
 
 	            		data:mini_data3
 	            	}
+
+	            }else if(modified_data[j]['attributes']['ISSUE']=="Administrative InJustice"){ /////////////////////////////////////////////
+
+	            	mini_data4.push(pvalue)
+
+	            	dataset4[modified_data[j]['attributes']['ISSUE']] = {
+
+	            		data:mini_data4
+	            	}
+
+	            }else if(modified_data[j]['attributes']['ISSUE']=="Unlawful Official Conduct"){
+
+	            	mini_data5.push(pvalue)
+
+	            	dataset5[modified_data[j]['attributes']['ISSUE']] = {
+
+	            		data:mini_data5
+	            	}
+
+	            }else if(modified_data[j]['attributes']['ISSUE']=="Maladministration"){
+
+	            	mini_data6.push(pvalue)
+
+	            	dataset6[modified_data[j]['attributes']['ISSUE']] = {
+
+	            		data:mini_data6
+	            	}
 	            }
 
-
-	            
 	           
 	        }
 
-		    dataset_final2 = ['Abuse_Of_Power']
-		    dataset_final3 = ['Delay']
-		    dataset_final4 = ['Inefficiency']
+		    dataset_final1 = ['Abuse_Of_Power']
+		    dataset_final2 = ['Delay']
+		    dataset_final3 = ['Inefficiency']
+		    dataset_final4 = ['Administrative_InJustice']
+		    dataset_final5 = ['Unlawful_Official_Conduct']
+		    dataset_final6 = ['Maladministration']
 
-		    for(q=0;q<dataset['Abuse Of Power']['data'].length; q++){
-		    	dataset_final2.push(dataset['Abuse Of Power']['data'][q])
-		    	dataset_final3.push(dataset2['Delay']['data'][q])
-		    	dataset_final4.push(dataset3['Inefficiency']['data'][q])
+		    for(q=0;q<dataset1['Abuse Of Power']['data'].length; q++){
+		    	dataset_final1.push(dataset1['Abuse Of Power']['data'][q])
+		    	dataset_final2.push(dataset2['Delay']['data'][q])
+		    	dataset_final3.push(dataset3['Inefficiency']['data'][q])
+		    	dataset_final4.push(dataset4['Administrative InJustice']['data'][q])
+		    	dataset_final5.push(dataset5['Unlawful Official Conduct']['data'][q])
+		    	dataset_final6.push(dataset6['Maladministration']['data'][q])
 		    }
 
 		
 
-		    console.log(full_data)
+		    console.log(modified_data)
 
 		    var chart = c3.generate({
 		    	bindto: '#c3_container',
@@ -193,13 +177,17 @@ $(document).ready(function () {
 		    	},
 			    data: {
 			        columns: [
+			            dataset_final1,
 			            dataset_final2,
 			            dataset_final3,
-			            dataset_final4
+			            dataset_final4,
+			            dataset_final5,
+			            dataset_final6
+			            
 			        ],
 			        type: 'bar',
 			        groups: [
-			            ['Abuse_Of_Power', 'Delay', 'Inefficiency']
+			            ['Abuse_Of_Power', 'Delay', 'Inefficiency', 'Administrative_InJustice', 'Unlawful_Official_Conduct', 'Maladministration']
 			        ],
 			    },
 
